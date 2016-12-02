@@ -1,4 +1,5 @@
 # CHROnIC
+![logo](images/CHROnIC_logo_med.png)
 ##**Cisco Health Report & ONline Information Collector**
 This is an application designed to interact with infrastructure components, and perform an online analysis of them.
 
