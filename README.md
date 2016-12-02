@@ -10,14 +10,58 @@ This is an application designed to interact with infrastructure components, and 
 
 *The Solution* - Create an application that will enable interaction with UCS from the cloud. This particular application has several microservices, including:
 
-* Bus - Used as a basic HTTP-based message queue
-* Collector - On-prem component used to exchange core information between on-prem infrastructure and the Portal. Consumes messages from the queue.
-* Portal - Information Collection service and agent used to push tasks into the queue.
-* UCS ESX Analyzer - Process data and generate reports which are pushed back into the queue.
+* [Bus](https://github.com/imapex/CHROnIC_Bus) - Used as a basic HTTP-based message queue. [https://github.com/imapex/CHROnIC_Bus](https://github.com/imapex/CHROnIC_Bus)
+* [Collector](https://github.com/imapex/CHROnIC_Collector) - On-prem component used to exchange core information between on-prem infrastructure and the Portal. Consumes messages from the queue. [https://github.com/imapex/CHROnIC_Collector](https://github.com/imapex/CHROnIC_Collector)
+* [Portal](https://github.com/imapex/CHROnIC_Portal) - Information Collection service and agent used to push tasks into the queue. [https://github.com/imapex/CHROnIC_Portal](https://github.com/imapex/CHROnIC_Portal)
+* [UCS ESX Analyzer](https://github.com/imapex/CHROnIC_UCS_ESX_analyzer) - Process data and generate reports which are pushed back into the queue. [https://github.com/imapex/CHROnIC_UCS_ESX_analyzer](https://github.com/imapex/CHROnIC_UCS_ESX_analyzer)
 
 Contributors - Josh Anderson, Chad Peterson, Loy Evans
 
 ![](images/chronic.png)
+
+# Demo Install
+## Local Docker Builds
+* Install Docker for Mac or Docker for Windows
+
+Download Repos and build base containers
+```
+git clone http://github.com/imapex/CHROnIC_Bus
+git clone http://github.com/imapex/CHROnIC_Collector
+git clone http://github.com/imapex/CHROnIC_Portal
+git clone http://github.com/imapex/CHROnIC_UCS_ESX_analyzer
+
+docker build -t chronic_bus CHROnIC_Bus/.
+docker build -t chronic_collector CHROnIC_Collector/.
+docker build -t chronic_portal CHROnIC_Portal/.
+docker build -t chronic_ucs_esx_analyzer CHROnIC_UCS_ESX_analyzer/.
+```
+
+Run the Following containers locally in this order
+```
+docker run -d -p 5000:5000 --name chronic_bus chronic_bus
+docker run -d -p 5001:5000 -e chronicbus=chronicbus:5000 --link chronic_bus:chronicbus --name chronic_collector chronic_collector
+docker run -d -p 5003:5000 -e CHRONICBUS=http://chronicbus:5000 --link chronic_bus:chronicbus -e  HCL=http://ucshcltool.cloudapps.cisco.com/public/rest -e CHRONICPORTAL=http://localhost:80 --name chronic_ucs_esx_analyzer chronic_ucs_esx_analyzer
+docker run -d -p 80:5000 -e CHRONICBUS=http://chronicbus:5000 --link chronic_bus:chronicbus -e CHRONICPORTAL=http://localhost:80 -e CHRONICUCS=http://localhost:5003 --name chronic_portal chronic_portal
+
+```
+
+Get the collector's ID:
+```
+docker logs chronic_bus
+Check Bus: http://chronicbus:5000/api/get/cSzyGtq9
+```
+In our example channel ID is cSzyGtq9
+
+
+Navigate to [http://localhost](http://localhost) and submit a new job with channel id of cSzyGtq9
+
+Clean up
+```
+docker kill $(docker ps -q)
+docker rm $(docker ps -a -q)
+```
+
+
 
 # Installation
 The recommended installation process is to first deploy the Bus, then the Collector, then the UCS ESX Analyzer, and finally the Portal.
@@ -36,10 +80,7 @@ The following components are required to locall run this container:
 **Get the containers:**
 The latest builds of this project is available as Docker images from Docker Hub:
 ```
-docker pull imapex/chronic_bus:latest
-docker pull imapex/chronic_collector:latest
-docker pull imapex/chronic_ucs_esx_analyzer:latest
-docker pull imapex/chronic_portal:latest
+
 ```
 
 **Run the application:**
