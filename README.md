@@ -61,7 +61,7 @@ Navigate to [http://localhost](http://localhost) and submit a new job with chann
 * [Discovery](#discovery) See below to learn how to perform a discovery
 
 # Discovery<a name="discovery"></a>
-* Access http://127.0.0.1:5002 from your browser
+* Access http://127.0.0.1 from your browser
 * Click "New Health Check Job"
 ![](images/portal1.png)
 * Enter the IP/Hostname, Username and Password for your UCS Manager
