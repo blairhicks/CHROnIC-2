@@ -21,6 +21,7 @@ Contributors - Josh Anderson, Chad Peterson, Loy Evans
 
 # Installation
 The recommended installation process is to first deploy the Bus, then the Collector, then the UCS ESX Analyzer, and finally the Portal.
+**See the UCS ESX Analyzer's documentation for supported UCS hardware**
 
 ## Local Docker Builds Install
 * Install Docker for Mac or Docker for Windows
