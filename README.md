@@ -17,6 +17,8 @@ This is an application designed to interact with infrastructure components, and 
 
 Contributors - Josh Anderson, Chad Peterson, Loy Evans
 
+[Demo](https://www.youtube.com/watch?v=VEXby7V8Szs)
+
 ![](images/chronic.png)
 
 # Installation
