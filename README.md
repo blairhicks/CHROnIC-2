@@ -25,8 +25,10 @@ Contributors - Josh Anderson, Chad Peterson, Loy Evans
 The recommended installation process is to first deploy the Bus, then the Collector, then the UCS ESX Analyzer, and finally the Portal.
 **See the UCS ESX Analyzer's documentation for supported UCS hardware**
 
-## Local Docker Builds Install
-* Install Docker for Mac or Docker for Windows
+## Local Laptop Install using Docker for Mac or Docker for Windows
+Follow these instructions if you plan to run CHROnIC locally on your laptop.  You can either use pre-built containers or build them locally (this takes some extra time).
+
+### Build containers locally and run
 
 Download Repos and build base containers
 ```
@@ -50,7 +52,7 @@ docker run -d -p 80:5000 -e CHRONICBUS=http://chronicbus:5000 --link chronic_bus
 
 ```
 
-## Prebuilt containers
+### Run using Prebuilt containers
 ```
 docker run -d -p 5000:5000 --name chronic_bus imapex/chronic_bus
 docker run -d -p 5001:5000 -e chronicbus=chronicbus:5000 --link chronic_bus:chronicbus --name chronic_collector imapex/chronic_collector
