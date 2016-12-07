@@ -61,6 +61,31 @@ docker run -d -p 80:5000 -e CHRONICBUS=http://chronicbus:5000 --link chronic_bus
 
 ```
 
+## Deploying to Docker remote
+Each componant can be anywhere, none need to be paired together.  All need connectivity to the bus.  The portal and analyzer need connectivity to each other.  The collector needs to have connectivity to UCS, vCenter, vSphere hosts and the bus.  Typically you could deploy the collector locally on prem while all other components could live in the cloud.
+
+### Deploy Bus
+```
+docker run -d -p <exposed_port>:5000 --name chronic_bus imapex/chronic_bus
+```
+
+### Deploy Collector
+```
+docker run -d -p <exposed_port>:5000 -e chronicbus=<cronicbus_name/ip>:<port> --name chronic_collector imapex/chronic_collector
+```
+
+### Deploy Analyzer
+```
+docker run -d -p <exposed_port>:5000 -e CHRONICBUS=http://<chronicbus_name/ip>:<port> -e  HCL=http://ucshcltool.cloudapps.cisco.com/public/rest -e CHRONICPORTAL=http://<chronicportal_name/ip>:<port> --name chronic_ucs_esx_analyzer imapex/chronic_ucs_esx_analyzer
+```
+
+### Deploy Portal
+```
+docker run -d -p <exposed_port:5000 -e CHRONICBUS=http://<chronicbus_name/ip>:<port> -e CHRONICPORTAL=http://<chronicportal_name/ip>:<port> -e CHRONICUCS=http://<chronicucs_name/ip>:<port> --name chronic_portal imapex/chronic_portal
+
+```
+
+
 Get the collector's ID:
 ```
 docker logs chronic_bus
