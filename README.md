@@ -61,6 +61,12 @@ docker run -d -p 80:5000 -e CHRONICBUS=http://chronicbus:5000 --link chronic_bus
 
 ```
 
+Clean up commands
+```
+docker kill $(docker ps -q)
+docker rm $(docker ps -a -q)
+```
+
 ## Deploying to Docker remote
 Each componant can be anywhere, none need to be paired together.  All need connectivity to the bus.  The portal and analyzer need connectivity to each other.  The collector needs to have connectivity to UCS, vCenter, vSphere hosts and the bus.  Typically you could deploy the collector locally on prem while all other components could live in the cloud.
 
@@ -116,8 +122,4 @@ Navigate to [http://localhost](http://localhost) and submit a new job with chann
 
 
 
-Clean up commands
-```
-docker kill $(docker ps -q)
-docker rm $(docker ps -a -q)
-```
+
